@@ -1,6 +1,17 @@
-cmake_minimum_required(VERSION 3.15)
-project(code)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
+PROJECT(CACHE_SIM)
 
-set(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_STANDARD 11)
 
-add_executable(code main.cpp)
+SET(SIM_SOURCES
+        src/CacheSim.cpp)
+
+SET(SIM_INCLUDES
+        include/Reader.h
+        include/Utils.h
+        include/Op.h)
+
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+
+ADD_EXECUTABLE(${PROJECT_NAME} ${SIM_SOURCES} ${SIM_INCLUDES})
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PRIVATE include)
