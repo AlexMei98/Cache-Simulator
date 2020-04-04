@@ -2,3 +2,8 @@
 cmake-build-debug/
 build/
 bin/
+log/
+
+node_modules/
+package.json
+package-lock.json
