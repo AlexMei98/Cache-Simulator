@@ -1,13 +1,23 @@
 #include <iostream>
 
-#include "Reader.h"
-#include "Op.h"
+#include "Handler.h"
+#include "BlockPolicy.h"
+#include "Mapping/FullConnectMapping.h"
+#include "Replacement/RandomReplace.h"
+#include "WritemissPolicy.h"
+
+void handlerTest() {
+    auto *block = new BlockPolicy();
+    auto *mapping = new FullConnectMapping();
+    auto *replacement = new RandomReplace();
+    auto *writemiss = new WritemissPolicy();
+    auto *reader = new Reader("../trace/test.trace");
+    auto *writer = new Writer("../log/test.log");
+    auto *handler = new Handler(block, mapping, replacement, writemiss, reader, writer);
+    handler->processAll();
+}
 
 int main() {
-    Reader reader("../trace/test.trace");
-    Op op;
-    while (reader.next_op(op)) {
-        printf("w: %u | addr: 0x%016lx\n", op.w, op.addr);
-    }
+
     return 0;
 }

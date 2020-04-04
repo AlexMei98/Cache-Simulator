@@ -11,25 +11,25 @@
 #ifndef CACHE_SIM_TRACE_READER_H
 #define CACHE_SIM_TRACE_READER_H
 
+#include "defines.h"
+
 class Reader {
 public:
-    explicit Reader(const char* filename) {
-        this->filepath = filename;
-        printf("trace file set: %s\n", this->filepath);
+    explicit Reader(const char* filepath) {
+        printf("trace input file set: %s\n", filepath);
         this->fin.open(filepath, std::ios::in);
     }
 
-    bool next_op(Op &next) {
+    bool getNextOp(Op &next) {
         std::string temp;
         bool flag;
-        while (is_empty(temp)) if (!getline(this->fin, temp)) return false;
-        next = parse_line(temp);
+        while (isEmpty(temp)) if (!getline(this->fin, temp)) return false;
+        next = parseLine(temp);
         return true;
     }
 
 private:
-    const char* filepath;
-    std::fstream fin;
+    std::ifstream fin;
 };
 
 #endif //CACHE_SIM_TRACE_READER_H

@@ -5,11 +5,13 @@
 #ifndef CACHE_SIM_OP_H
 #define CACHE_SIM_OP_H
 
+#include "defines.h"
+
 struct Op {
     bool w; // 0 -> read / load / no-mode
             // 1 -> write / store
 
-    uint64_t addr; // operand address
+    u64 addr; // operand address
 
     Op() : w(false), addr(0) {}
 };

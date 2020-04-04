@@ -6,21 +6,23 @@
 #define CACHE_SIM_UTILS_H
 
 #include <string>
+
+#include "defines.h"
 #include "Op.h"
 
-bool is_blank(char c) {
+inline bool isBlank(char c) {
     return c == ' ' || c == '\t' || c == '\0';
 }
 
-bool is_empty(const std::string& s) {
+bool isEmpty(const std::string& s) {
     for (char c : s) {
-        if (!is_blank(c)) return false;
+        if (!isBlank(c)) return false;
     }
     return true;
 }
 
-uint64_t str2ull(std::string s, int start, int end) {
-    uint64_t x = 0, tmp;
+u64 str2ull(std::string s, int start, int end) {
+    u64 x = 0, tmp;
     for (int i = start; i < end; i++) {
         if (s[i] >= 'a' && s[i] <= 'z') tmp = s[i] - 'a' + 10; else tmp = s[i] - '0';
         x = (x << 4u) + tmp;
@@ -28,7 +30,7 @@ uint64_t str2ull(std::string s, int start, int end) {
     return x;
 }
 
-Op parse_line(std::string line) {
+Op parseLine(std::string line) {
     Op op;
     for (char & c : line) if (c >= 'A' && c <= 'Z') c += 'a' - 'A';
 
@@ -40,8 +42,8 @@ Op parse_line(std::string line) {
     int end = line.size();
 
     // address
-    while (is_blank(line[start])) start++;
-    while (is_blank(line[end - 1])) end--;
+    while (isBlank(line[start])) start++;
+    while (isBlank(line[end - 1])) end--;
     if (start + 3 < end && (line[start] == '0' && line[start + 1] == 'x')) start += 2;
     op.addr = str2ull(line, start, end);
     return op;
