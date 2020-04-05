@@ -8,6 +8,8 @@
 #include "MappingPolicy.h"
 
 class FullConnectMapping : public MappingPolicy {
+
+public:
     BlockRecord mappingTo(u64 blockIndex) override {
         // TODO
         return BlockRecord {0, 0, 0};
@@ -17,30 +19,30 @@ class FullConnectMapping : public MappingPolicy {
         // TODO
     }
 
-    bool valid(u32 index) override {
+    bool valid(const u32 index) override {
         // TODO
         return true;
     }
 
-    void setValid(u32 index, bool value) override {
+    void setValid(const u32 index, const bool value) override {
         // TODO
     }
 
-    bool dirty(u32 index) override {
-        // TODO
-        return true;
-    }
-
-    void setDirty(u32 index, bool value) override {
-        // TODO
-    }
-
-    bool checkTag(u64 address, u32 index) override {
+    bool dirty(const u32 index) override {
         // TODO
         return true;
     }
 
-    void setTag(u64 address, u32 index) override {
+    void setDirty(const u32 index, const bool value) override {
+        // TODO
+    }
+
+    bool checkTag(const u32 index, const u64 address) override {
+        // TODO
+        return true;
+    }
+
+    void setTag(const u32 index, const u64 address) override {
         // TODO
     }
 

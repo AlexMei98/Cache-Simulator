@@ -2,13 +2,13 @@
 
 #include "Handler.h"
 #include "BlockPolicy.h"
-#include "Mapping/FullConnectMapping.h"
+#include "Mapping/DirectMapping.h"
 #include "Replacement/RandomReplace.h"
 #include "WritemissPolicy.h"
 
 void handlerTest() {
     auto *block = new BlockPolicy();
-    auto *mapping = new FullConnectMapping();
+    auto *mapping = new DirectMapping();
     auto *replacement = new RandomReplace();
     auto *writemiss = new WritemissPolicy();
     auto *reader = new Reader("../trace/test.trace");
@@ -18,6 +18,6 @@ void handlerTest() {
 }
 
 int main() {
-
+    handlerTest();
     return 0;
 }

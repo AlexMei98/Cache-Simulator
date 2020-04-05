@@ -9,6 +9,7 @@
 #include "Handler.h"
 
 class ReplacementPolicy {
+
 public:
     void registerHandler(Handler *handler) {
         _handler = handler;
@@ -23,13 +24,14 @@ public:
         return _writemiss;
     }
 
-    virtual void update(u64 index, BlockRecord record) = 0;
+    virtual void update(Op op, u32 index, BlockRecord record) = 0;
 
-    virtual void load(u64 index, BlockRecord record) = 0;
+    virtual void load(Op op, BlockRecord record) = 0;
 
 private:
     Handler *_handler{};
     WritemissPolicy *_writemiss{};
+
 };
 
 #endif //CACHE_SIM_REPLACEMENT_POLICY_H

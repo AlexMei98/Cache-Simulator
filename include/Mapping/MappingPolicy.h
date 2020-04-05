@@ -21,6 +21,7 @@ struct BlockRecord {
 };
 
 class MappingPolicy {
+
 public:
     void registerHandler(Handler *handler) {
         _handler = handler;
@@ -42,18 +43,22 @@ public:
 
     virtual void setDirty(u32 index, bool value) = 0;
 
-    virtual bool checkTag(u64 address, u32 index) = 0;
+    virtual bool checkTag(u32 index, u64 address) = 0;
 
-    virtual void setTag(u64 address, u32 index) = 0;
+    virtual void setTag(u32 index, u64 address) = 0;
 
     // getters
 
     u32 bitWidthUsed() {
-        return ((_bitWidth & 0b111u) ? (_bitWidth >> 3u) + 1u : _bitWidth >> 3u) << 3u;
+        return ((_bitWidth & 0b111u) ? ((_bitWidth >> 3u) + 1u) : (_bitWidth >> 3u)) << 3u;
     }
 
     u32 bitWidth() {
         return _bitWidth;
+    }
+
+    u32 tagWidth() const {
+        return _tagWidth;
     }
 
     inline Handler* handler() const {
@@ -67,10 +72,12 @@ public:
 protected:
     u8 **meta{};
     u32 _bitWidth{};
+    u32 _tagWidth{};
 
 private:
     Handler *_handler{};
     BlockPolicy *_block{};
+
 };
 
 #endif //CACHE_SIM_MAPPING_POLICY_H

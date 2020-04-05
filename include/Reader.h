@@ -14,10 +14,10 @@
 #include "defines.h"
 
 class Reader {
+
 public:
-    explicit Reader(const char* filepath) {
+    explicit Reader(const char* filepath) : fin(filepath, std::ios::in) {
         printf("trace input file set: %s\n", filepath);
-        this->fin.open(filepath, std::ios::in);
     }
 
     bool getNextOp(Op &next) {
@@ -28,8 +28,13 @@ public:
         return true;
     }
 
+    inline void close() {
+        fin.close();
+    }
+
 private:
-    std::ifstream fin;
+    std::fstream fin;
+
 };
 
 #endif //CACHE_SIM_TRACE_READER_H

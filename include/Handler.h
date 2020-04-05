@@ -16,11 +16,10 @@ class ReplacementPolicy;
 class WritemissPolicy;
 
 class Handler {
+
 public:
     Handler(BlockPolicy *block, MappingPolicy *mapping, ReplacementPolicy *replacement,
                      WritemissPolicy *writemiss, Reader *reader, Writer *writer, u32 capacity = 128u << 13u);
-
-    inline u32 capacity() const { return _capacity; }
 
     bool processSingleLine(Op &op);
 
@@ -28,11 +27,13 @@ public:
         Op op;
         printf("start process\n");
         while (processSingleLine(op));
+        writer()->close();
+        reader()->close();
         printf("process finished\n");
     }
 
     inline bool getNextOp(Op &op) {
-        if (_reader->getNextOp(op)) {
+        if (reader()->getNextOp(op)) {
             opNum++;
             return true;
         } else {
@@ -42,14 +43,24 @@ public:
 
     inline void hit() {
         hitNum++;
-        _writer->hit();
+        writer()->hit();
     }
 
     inline void miss() {
-        _writer->miss();
+        writer()->miss();
     }
 
     // getters: const provided
+
+    inline u32 capacity() const { return _capacity; }
+
+    inline Reader *reader() const {
+        return _reader;
+    }
+
+    inline Writer *writer() const {
+        return _writer;
+    }
 
     inline BlockPolicy *block() const {
         return _block;
@@ -79,6 +90,7 @@ private:
 
     u32 opNum = 0;
     u32 hitNum = 0;
+
 };
 
 #endif //CACHE_SIM_HANDLER_H

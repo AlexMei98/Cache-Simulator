@@ -9,23 +9,31 @@
 
 #include "defines.h"
 
+#define WRITE 0x1000
+
 class Writer {
+
 public:
-    explicit Writer(const char* filepath) {
+    explicit Writer(const char* filepath) : fout(filepath, std::ios::out) {
         printf("trace log output file set: %s\n", filepath);
-        this->fout.open(filepath, std::ios::out);
     }
 
     inline void hit() {
-        fout.write("Hit\n", 4);
+        fout << "Hit\n";
     }
 
     inline void miss() {
-        fout.write("Miss\n", 5);
+        fout << "Miss\n";
+    }
+
+    inline void close() {
+        fout.flush();
+        fout.close();
     }
 
 private:
-    std::ofstream fout;
+    std::fstream fout;
+
 };
 
 #endif //CACHE_SIM_WRITER_H

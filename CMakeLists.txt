@@ -6,6 +6,7 @@ SET(CMAKE_CXX_STANDARD 11)
 SET(SIM_SOURCES
         src/CacheSim.cpp
         src/Handler.cpp
+        src/Utils.cpp
 )
 
 SET(SIM_INCLUDES
@@ -20,8 +21,7 @@ SET(SIM_INCLUDES
         include/Mapping/FullConnectMapping.h
         include/Replacement/ReplacementPolicy.h
         include/Replacement/RandomReplace.h
-        include/WritemissPolicy.h
-)
+        include/WritemissPolicy.h)
 
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 FILE(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/log)

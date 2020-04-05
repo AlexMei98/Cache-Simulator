@@ -11,6 +11,7 @@
 #include "Handler.h"
 
 class BlockPolicy {
+
 public:
     explicit BlockPolicy(u32 size = 8) {
         switch (size) {
@@ -66,6 +67,7 @@ private:
     u32 _blockSize;
     u32 _blockNum{};
     u32 _shift;
+
 };
 
 #endif //CACHE_SIM_BLOCK_POLICY_H
