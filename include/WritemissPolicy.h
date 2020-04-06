@@ -23,16 +23,16 @@ public:
     }
 
     inline void print() {
-        printf("Writemiss: ");
+        printf("Writemiss Policy\n");
         if (writeBack()) {
-            printf("write back, ");
+            printf("\tWrite back\n");
         } else {
-            printf("write though, ");
+            printf("\tWrite though\n");
         }
         if (writeAllocate()) {
-            printf("write allocate\n");
+            printf("\tWrite allocate\n");
         } else {
-            printf("no-write allocate\n");
+            printf("\tNo-write allocate\n");
         }
     }
 

@@ -28,40 +28,44 @@ public:
         V = 0b1u;
         u32 wasted = bitWidthUsed() - bitWidth();
         V <<= (7u - wasted);
-        D = V >> 1u;
-
         RV = ~V;
+
+        // dirty and valid maybe in different u8
+        vBit = 0;
+        dBit = (handler()->writemiss()->writeBack() && V == 0b1u) ? 1 : 0;
+
+        D = (dBit == 1) ? 0b10000000 : (V >> 1u);
         RD = ~D;
 
         // meta allocate
-        meta = new u8*[block()->blockNum()];
+        meta = new u8 *[block()->blockNum()];
         for (int i = 0, size = block()->blockNum(); i < size; i++) {
             meta[i] = new u8[bitWidthUsed() >> 3u]();
         }
     }
 
     bool valid(const u32 index) override {
-        return meta[index][0] & V;
+        return meta[index][vBit] & V;
     }
 
     void setValid(const u32 index, const bool value) override {
         if (value) {
-            meta[index][0] |= V;
+            meta[index][vBit] |= V;
         } else {
-            meta[index][0] = meta[index][0] & RV;
+            meta[index][vBit] = meta[index][vBit] & RV;
         }
     }
 
     bool dirty(const u32 index) override {
-        return handler()->writemiss()->writeBack() && (meta[index][0] & D);
+        return handler()->writemiss()->writeBack() && (meta[index][dBit] & D);
     }
 
     void setDirty(const u32 index, const bool value) override {
         if (!handler()->writemiss()->writeBack()) return;
         if (value) {
-            meta[index][0] |= D;
+            meta[index][dBit] |= D;
         } else {
-            meta[index][0] = meta[index][0] & RD;
+            meta[index][dBit] = meta[index][dBit] & RD;
         }
     }
 
@@ -100,14 +104,17 @@ public:
         // set meta[index][left] using address
         u8 p = 0b1u;
         while (tag) {
-            meta[index][0] |= addr & p;
+            meta[index][left] |= addr & p;
             p <<= 1u;
             tag--;
         }
     }
 
     void print() override {
-        printf("Mapping: direct mapping\n");
+        printf("Mapping Policy\n");
+        printf("\tDirect mapping\n");
+        printf("\tPhysically used bits: %d (%dB)\n", bitWidthUsed(), bitWidthUsed() / 8u);
+        printf("\tReal used bits: %d\n", bitWidth());
     }
 
 private:
@@ -115,6 +122,8 @@ private:
     u8 D{};
     u8 RV{};
     u8 RD{};
+    u32 dBit{};
+    u32 vBit{};
 
 };
 

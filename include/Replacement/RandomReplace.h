@@ -32,7 +32,8 @@ public:
     }
 
     void print() override {
-        printf("Replacement: random\n");
+        printf("Replacement Policy\n");
+        printf("\tRandom Replace\n");
     }
 
 private:

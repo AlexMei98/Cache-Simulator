@@ -6,6 +6,7 @@
 #define CACHE_SIM_BLOCK_POLICY_H
 
 #include <cstdio>
+#include <cmath>
 
 #include "defines.h"
 #include "Handler.h"
@@ -58,10 +59,12 @@ public:
     }
 
     inline void print() {
-        printf("Block size: %dB\n", blockSize());
+        printf("Block Policy\n");
+        printf("\tBlock size: %dB\n", blockSize());
+        printf("\tBlock number: %d (2^%d)\n", blockNum(), static_cast<u32>(log2(handler()->capacity())) - shift());
     }
 
-    inline Handler* handler() const {
+    inline Handler *handler() const {
         return _handler;
     }
 
