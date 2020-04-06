@@ -22,8 +22,8 @@ Handler::Handler(BlockPolicy *block, MappingPolicy *mapping, ReplacementPolicy *
 
 bool Handler::processSingleLine(Op &op) {
     if (!getNextOp(op)) return false;
-    const u64 index = block()->getIndex(op.addr);
-    BlockRecord record = mapping()->mappingTo(index);
+    const u64 index = block()->getIndex(op.addr); // block index
+    BlockRecord record = mapping()->mappingTo(index); // find available place
     for (u32 i = 0; i < record.n; i++) {
         u32 t_index = i * record.jump + record.start;
         if (!mapping()->valid(t_index)) continue;
@@ -36,4 +36,14 @@ bool Handler::processSingleLine(Op &op) {
     miss();
     replacement()->load(op, record);
     return true;
+}
+
+void Handler::summary() {
+    printf("---------------- Summary ----------------\n");
+    block()->print();
+    mapping()->print();
+    replacement()->print();
+    writemiss()->print();
+    printf("------------------ End ------------------\n");
+    printf("Miss rate: %0.3f%%\n", 100.0f - 100 * (double(hitNum)) / (double(opNum)));
 }
