@@ -26,15 +26,22 @@ bool Handler::processSingleLine(Op &op) {
     BlockRecord record = mapping()->mappingTo(index); // find available place
     for (u32 i = 0; i < record.n; i++) {
         u32 t_index = i * record.jump + record.start;
-        if (!mapping()->valid(t_index)) continue;
+        if (!mapping()->valid(t_index)) continue; // not valid continue
         if (mapping()->checkTag(t_index, op.addr)) {
             hit();
-            replacement()->update(op, t_index, record);
+            replacement()->update(op, t_index, record); // update hit record
             return true;
         }
     }
     miss();
-    replacement()->load(op, record);
+    if (op.w && !writemiss()->writeAllocate()) return true;
+    for (u32 i = 0; i < record.n; i++) { // load to invalid cache block
+        u32 t_index = i * record.jump + record.start;
+        if (!mapping()->valid(t_index)) continue;
+        replacement()->load(op, t_index);
+        return true;
+    }
+    replacement()->replace(op, record); // cache full (available places), replace used block
     return true;
 }
 

@@ -3,12 +3,13 @@
 #include "Handler.h"
 #include "BlockPolicy.h"
 #include "Mapping/DirectMapping.h"
+#include "Mapping/FullConnectMapping.h"
 #include "Replacement/RandomReplace.h"
 #include "WritemissPolicy.h"
 
 void handlerTest() {
     // Block Policy
-    u32 blockSize = 64;
+    u32 blockSize = 8;
     auto *block = new BlockPolicy(blockSize);
 
     // Mapping Policy
@@ -21,12 +22,12 @@ void handlerTest() {
 
     // Writemiss Policy
     bool writeBack = true;
-    bool writeAllocate = false;
+    bool writeAllocate = true;
     auto *writemiss = new WritemissPolicy(writeBack, writeAllocate);
 
     // Utils
-    auto *reader = new Reader("../trace/astar.trace");
-    auto *writer = new Writer("../log/astar.log");
+    auto *reader = new Reader("../trace/test.trace");
+    auto *writer = new Writer("../log/test.log");
 
     // Main handler
     auto *handler = new Handler(block, mapping, replacement, writemiss, reader, writer);

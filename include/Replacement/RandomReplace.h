@@ -23,12 +23,16 @@ public:
         }
     }
 
-    void load(const Op op, const BlockRecord record) override {
+    void load(const Op op, const u32 index) override {
         if (op.w && !handler()->writemiss()->writeAllocate()) return;
-        u32 victim_index =  record.start + (static_cast<u32>(randint()) % record.n) * record.jump;
-        handler()->mapping()->setValid(victim_index, true);
-        handler()->mapping()->setDirty(victim_index, false);
-        handler()->mapping()->setTag(victim_index, op.addr);
+        handler()->mapping()->setValid(index, true);
+        handler()->mapping()->setDirty(index, op.w);
+        handler()->mapping()->setTag(index, op.addr);
+    }
+
+    void replace(const Op op, const BlockRecord record) override {
+        u32 victim_index = record.start + (static_cast<u32>(randint()) % record.n) * record.jump;
+        load(op, victim_index);
     }
 
     void print() override {

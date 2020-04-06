@@ -10,6 +10,8 @@
 #include "BlockPolicy.h"
 #include "WritemissPolicy.h"
 
+#define U8A1 ((u8)(0xFF))
+
 struct BlockRecord {
     u32 start;
     u32 jump;
@@ -37,19 +39,80 @@ public:
 
     // tag, valid, dirty getters
 
-    virtual bool valid(u32 index) = 0;
+    bool valid(u32 index) {
+        return meta[index][vBit] & V;
+    }
 
-    virtual void setValid(u32 index, bool value) = 0;
+    void setValid(const u32 index, const bool value) {
+        if (value) {
+            meta[index][vBit] |= V;
+        } else {
+            meta[index][vBit] = meta[index][vBit] & RV;
+        }
+    }
 
-    virtual bool dirty(u32 index) = 0;
+    bool dirty(const u32 index) {
+        return handler()->writemiss()->writeBack() && (meta[index][dBit] & D);
+    }
 
-    virtual void setDirty(u32 index, bool value) = 0;
+    void setDirty(u32 index, bool value) {
+        if (!handler()->writemiss()->writeBack()) return;
+        if (value) {
+            meta[index][dBit] |= D;
+        } else {
+            meta[index][dBit] = meta[index][dBit] & RD;
+        }
+    }
 
-    virtual bool checkTag(u32 index, u64 address) = 0;
+    bool checkTag(u32 index, u64 address) {
+        u64 addr = address;
+        u32 tag = tagWidth(), i = (bitWidthUsed() >> 3u) - 1;
+        u32 left = i - (tag >> 3u);
+        // set full used byte (left, i]
+        for (; i != left; i--) {
+            if (meta[index][i] != (addr & U8A1)) {
+                return false;
+            }
+            addr >>= 8u;
+            tag -= 8;
+        }
+        u32 shift = 8u - tag;
+        return (shift == 8u) || ((meta[index][left] << shift) == ((addr << shift) & U8A1));
+    }
 
-    virtual void setTag(u32 index, u64 address) = 0;
+    void setTag(u32 index, u64 address) {
+        // set full used byte
+        u64 addr = address;
+        u32 tag = tagWidth(), i = (bitWidthUsed() >> 3u) - 1;
+        u32 left = i - (tag >> 3u);
+        for (; i != left; i--) {
+            meta[index][i] = addr & U8A1;
+            addr >>= 8u;
+            tag -= 8;
+        }
+        if (tag == 0u) return;
 
-    virtual void print() = 0;
+        // reset tag_bit with 0 in meta[index][left]
+        u32 shift = 8u - tag;
+        meta[index][left] = ((unsigned) meta[index][left] >> shift) << shift;
+
+        // set meta[index][left] using address
+        u8 p = 0b1u;
+        while (tag) {
+            meta[index][left] |= addr & p;
+            p <<= 1u;
+            tag--;
+        }
+    }
+
+    void print() {
+        printf("Mapping Policy\n");
+        printf("\t%s\n", me());
+        printf("\tPhysically used bits: %d (%dB)\n", bitWidthUsed(), bitWidthUsed() / 8u);
+        printf("\tReal used bits: %d\n", bitWidth());
+    }
+
+    virtual const char *me() = 0;
 
     // getters
 
@@ -77,6 +140,13 @@ protected:
     u8 **meta{};
     u32 _bitWidth{};
     u32 _tagWidth{};
+
+    u8 V{};
+    u8 D{};
+    u8 RV{};
+    u8 RD{};
+    u32 dBit{};
+    u32 vBit{};
 
 private:
     Handler *_handler{};

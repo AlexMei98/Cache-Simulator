@@ -26,7 +26,9 @@ public:
 
     virtual void update(Op op, u32 index, BlockRecord record) = 0;
 
-    virtual void load(Op op, BlockRecord record) = 0;
+    virtual void load(Op op, u32 index) = 0;
+
+    virtual void replace(Op op, BlockRecord record) = 0;
 
     virtual void print() = 0;
 
