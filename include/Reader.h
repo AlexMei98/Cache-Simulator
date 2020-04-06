@@ -17,7 +17,11 @@ class Reader {
 
 public:
     explicit Reader(const char* filepath) : fin(filepath, std::ios::in) {
-        printf("trace input file set: %s\n", filepath);
+        if (!fin) {
+            printf("Trace input file `%s` not exist\n", filepath);
+            exit(0);
+        }
+        printf("Trace input file set: %s\n", filepath);
     }
 
     bool getNextOp(Op &next) {

@@ -15,7 +15,7 @@ class Writer {
 
 public:
     explicit Writer(const char* filepath) : fout(filepath, std::ios::out) {
-        printf("trace log output file set: %s\n", filepath);
+        printf("Trace log output file set: %s\n", filepath);
     }
 
     inline void hit() {
