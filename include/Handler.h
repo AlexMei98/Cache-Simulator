@@ -25,12 +25,14 @@ public:
 
     void processAll() {
         Op op;
-        printf("start process\n");
+        printf("Start process\n");
         while (processSingleLine(op));
         writer()->close();
         reader()->close();
-        printf("process finished\n");
+        printf("Process finished\n");
     }
+
+    void summary();
 
     inline bool getNextOp(Op &op) {
         if (reader()->getNextOp(op)) {

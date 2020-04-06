@@ -18,7 +18,7 @@ public:
             case 64: _shift = 6; break;
             case 32: _shift = 5; break;
             case  8: _shift = 3; break;
-            default: printf("Invalid block size: %u", size); exit(0);
+            default: printf("Invalid block size: %u\n", size); exit(0);
         }
         _blockSize = size;
     }
@@ -41,7 +41,7 @@ public:
             case 64: return address & 0b111111u;
             case 32: return address & 0b011111u;
             case  8: return address & 0b000111u;
-            default: printf("Invalid block size: %u", blockSize()); exit(0);
+            default: printf("Invalid block size: %u\n", blockSize()); exit(0);
         }
     }
 
@@ -55,6 +55,10 @@ public:
 
     inline u32 shift() const {
         return _shift;
+    }
+
+    inline void print() {
+        printf("Block size: %dB\n", blockSize());
     }
 
     inline Handler* handler() const {

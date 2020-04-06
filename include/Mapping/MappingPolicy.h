@@ -7,6 +7,8 @@
 
 #include "defines.h"
 #include "Handler.h"
+#include "BlockPolicy.h"
+#include "WritemissPolicy.h"
 
 struct BlockRecord {
     u32 start;
@@ -46,6 +48,8 @@ public:
     virtual bool checkTag(u32 index, u64 address) = 0;
 
     virtual void setTag(u32 index, u64 address) = 0;
+
+    virtual void print() = 0;
 
     // getters
 

@@ -18,16 +18,21 @@ public:
     explicit RandomReplace(u32 seed = 0u, bool rand = false) : randint(rand ? time(nullptr) : seed) {}
 
     void update(const Op op, const u32 index, const BlockRecord record) override {
-        if (op.w) {
+        if (op.w && handler()->writemiss()->writeBack()) {
             handler()->mapping()->setDirty(index, true);
         }
     }
 
     void load(const Op op, const BlockRecord record) override {
+        if (op.w && !handler()->writemiss()->writeAllocate()) return;
         u32 victim_index =  record.start + (static_cast<u32>(randint()) % record.n) * record.jump;
         handler()->mapping()->setValid(victim_index, true);
         handler()->mapping()->setDirty(victim_index, false);
         handler()->mapping()->setTag(victim_index, op.addr);
+    }
+
+    void print() override {
+        printf("Replacement: random\n");
     }
 
 private:

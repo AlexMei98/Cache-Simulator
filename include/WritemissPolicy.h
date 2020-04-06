@@ -22,6 +22,20 @@ public:
         return _writeAllocate;
     }
 
+    inline void print() {
+        printf("Writemiss: ");
+        if (writeBack()) {
+            printf("write back, ");
+        } else {
+            printf("write though, ");
+        }
+        if (writeAllocate()) {
+            printf("write allocate\n");
+        } else {
+            printf("no-write allocate\n");
+        }
+    }
+
 private:
     bool _writeBack;
     bool _writeAllocate;

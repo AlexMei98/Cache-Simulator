@@ -28,6 +28,8 @@ public:
 
     virtual void load(Op op, BlockRecord record) = 0;
 
+    virtual void print() = 0;
+
 private:
     Handler *_handler{};
     WritemissPolicy *_writemiss{};

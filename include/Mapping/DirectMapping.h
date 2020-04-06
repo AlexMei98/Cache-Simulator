@@ -8,8 +8,6 @@
 #define U8A1 ((u8)(0xFF))
 
 #include "MappingPolicy.h"
-#include "BlockPolicy.h"
-#include "WritemissPolicy.h"
 
 class DirectMapping : public MappingPolicy {
 
@@ -106,6 +104,10 @@ public:
             p <<= 1u;
             tag--;
         }
+    }
+
+    void print() override {
+        printf("Mapping: direct mapping\n");
     }
 
 private:
