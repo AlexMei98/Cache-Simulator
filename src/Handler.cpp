@@ -37,7 +37,7 @@ bool Handler::processSingleLine(Op &op) {
     if (op.w && !writemiss()->writeAllocate()) return true;
     for (u32 i = 0; i < record.n; i++) { // load to invalid cache block
         u32 t_index = i * record.jump + record.start;
-        if (!mapping()->valid(t_index)) continue;
+        if (mapping()->valid(t_index)) continue;
         replacement()->load(op, t_index);
         return true;
     }

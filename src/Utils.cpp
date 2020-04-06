@@ -32,6 +32,9 @@ u64 str2ull(std::string s, int start, int end) {
 
 Op parseLine(std::string line) {
     Op op;
+#ifdef _DEBUG
+    op.line = line;
+#endif
     for (char & c : line) if (c >= 'A' && c <= 'Z') c += 'a' - 'A';
 
     // r / w

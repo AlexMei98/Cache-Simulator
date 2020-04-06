@@ -5,6 +5,11 @@
 #ifndef CACHE_SIM_OP_H
 #define CACHE_SIM_OP_H
 
+#define _DEBUG
+#ifdef _DEBUG
+#include <string>
+#endif
+
 #include "defines.h"
 
 struct Op {
@@ -13,7 +18,13 @@ struct Op {
 
     u64 addr; // operand address
 
+#ifdef _DEBUG
+    std::string line;
+    Op() : w(false), addr(0), line() {}
+#else
     Op() : w(false), addr(0) {}
+#endif
+
 };
 
 #endif //CACHE_SIM_OP_H

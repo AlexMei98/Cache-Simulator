@@ -16,11 +16,11 @@ public:
         _writemiss = handler->writemiss();
     }
 
-    inline Handler* handler() const {
+    inline Handler *handler() const {
         return _handler;
     }
 
-    inline WritemissPolicy* writemiss() const {
+    inline WritemissPolicy *writemiss() const {
         return _writemiss;
     }
 

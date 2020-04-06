@@ -25,7 +25,7 @@ public:
         // set V and D
         V = 0b1u;
         u32 wasted = bitWidthUsed() - bitWidth();
-        V <<= (7u - wasted);
+        V = static_cast<u8>(V << (7u - wasted));
         RV = ~V;
 
         // dirty and valid maybe in different u8

@@ -77,7 +77,7 @@ public:
             tag -= 8;
         }
         u32 shift = 8u - tag;
-        return (shift == 8u) || ((meta[index][left] << shift) == ((addr << shift) & U8A1));
+        return (shift == 8u) || ((static_cast<u8>(meta[index][left] << shift)) == ((addr << shift) & U8A1));
     }
 
     void setTag(u32 index, u64 address) {
@@ -93,8 +93,7 @@ public:
         if (tag == 0u) return;
 
         // reset tag_bit with 0 in meta[index][left]
-        u32 shift = 8u - tag;
-        meta[index][left] = ((unsigned) meta[index][left] >> shift) << shift;
+        meta[index][left] = static_cast<u8>((static_cast<u8>(meta[index][left] >> tag)) << tag);
 
         // set meta[index][left] using address
         u8 p = 0b1u;
@@ -128,11 +127,11 @@ public:
         return _tagWidth;
     }
 
-    inline Handler* handler() const {
+    inline Handler *handler() const {
         return _handler;
     }
 
-    inline BlockPolicy* block() const {
+    inline BlockPolicy *block() const {
         return _block;
     }
 

@@ -16,7 +16,7 @@
 class Reader {
 
 public:
-    explicit Reader(const char* filepath) : fin(filepath, std::ios::in) {
+    explicit Reader(const char *filepath) : fin(filepath, std::ios::in) {
         if (!fin) {
             printf("Trace input file `%s` not exist\n", filepath);
             exit(0);
