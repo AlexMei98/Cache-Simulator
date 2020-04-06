@@ -5,6 +5,8 @@
 #ifndef CACHE_SIM_DIRECT_MAPPING_H
 #define CACHE_SIM_DIRECT_MAPPING_H
 
+#include <cmath>
+
 #include "MappingPolicy.h"
 
 class DirectMapping : public MappingPolicy {
@@ -17,8 +19,8 @@ public:
     void init() override {
         // set bit width
         _bitWidth = 1; // valid bit
-        _tagWidth = 47; // tag = 64 - offset_b - (17 - offset_b)
-                        // offset_b = log2(block_size)
+        _tagWidth = 64 - static_cast<u32>(log2(handler()->capacity())); // tag = 64 - offset_b - (17 - offset_b)
+                                                                           // offset_b = log2(block_size)
         _bitWidth += _tagWidth;
         if (handler()->writemiss()->writeBack()) _bitWidth++; // dirty bit
 
