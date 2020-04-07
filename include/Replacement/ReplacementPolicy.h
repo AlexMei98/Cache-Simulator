@@ -7,6 +7,7 @@
 
 #include "defines.h"
 #include "Handler.h"
+#include "Mapping/MappingPolicy.h"
 
 class ReplacementPolicy {
 
@@ -33,7 +34,7 @@ public:
 
     virtual void replace(Op op, BlockRecord record) = 0;
 
-    void print() {
+    virtual void print() {
         printf("Replacement Policy\n");
         printf("\t%s Replace\n", me());
     }

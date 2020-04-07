@@ -22,6 +22,7 @@ SET(SIM_INCLUDES
         include/Mapping/SetAssociativeMapping.h
         include/Replacement/ReplacementPolicy.h
         include/Replacement/RandomReplace.h
+        include/Replacement/LRUReplace.h
         include/WritemissPolicy.h
 )
 

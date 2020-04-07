@@ -33,8 +33,8 @@ public:
     }
 
     void replace(const Op op, const BlockRecord record) override {
-        u32 victim_index = record.start + (static_cast<u32>(randint()) % record.n) * record.jump;
-        load(op, victim_index);
+        u32 victimIndex = record.start + (static_cast<u32>(randint()) % record.n) * record.jump;
+        load(op, victimIndex);
     }
 
     const char *me() const override {
