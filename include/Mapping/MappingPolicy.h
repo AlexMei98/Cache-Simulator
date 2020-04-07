@@ -33,7 +33,7 @@ public:
         init();
     }
 
-    virtual BlockRecord mappingTo(u64 blockIndex) = 0;
+    virtual BlockRecord mappingTo(u64 blockIndex) const = 0;
 
     virtual void initTagWidth() = 0;
 
@@ -69,7 +69,7 @@ public:
 
     // tag, valid, dirty getters
 
-    bool valid(const u32 index) {
+    bool valid(const u32 index) const {
         return meta[index][vBit] & V;
     }
 
@@ -81,7 +81,7 @@ public:
         }
     }
 
-    bool dirty(const u32 index) {
+    bool dirty(const u32 index) const {
         return handler()->writemiss()->writeBack() && (meta[index][dBit] & D);
     }
 
@@ -94,7 +94,7 @@ public:
         }
     }
 
-    bool checkTag(const u32 index, const u64 address) {
+    bool checkTag(const u32 index, const u64 address) const {
         u64 addr = address;
         u32 tag = tagWidth(), i = (bitWidthUsed() >> 3u) - 1;
         u32 left = i - (tag >> 3u);
@@ -141,15 +141,15 @@ public:
         printf("\tReal used bits: %d\n", bitWidth());
     }
 
-    virtual const char *me() = 0;
+    virtual const char *me() const = 0;
 
     // getters
 
-    u32 bitWidthUsed() {
+    u32 bitWidthUsed() const {
         return ((_bitWidth & 0b111u) ? ((_bitWidth >> 3u) + 1u) : (_bitWidth >> 3u)) << 3u;
     }
 
-    u32 bitWidth() {
+    u32 bitWidth() const {
         return _bitWidth;
     }
 
@@ -165,7 +165,7 @@ public:
         return _block;
     }
 
-    inline u32 n() {
+    inline u32 n() const {
         return _n;
     }
 
@@ -173,7 +173,7 @@ protected:
     u8 **meta{};
     u32 _bitWidth{};
     u32 _tagWidth{};
-    u32 _n;
+    u32 _n{};
 
     u8 V{};
     u8 D{};

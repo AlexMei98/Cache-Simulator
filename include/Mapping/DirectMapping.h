@@ -10,7 +10,7 @@
 class DirectMapping : public MappingPolicy {
 
 public:
-    BlockRecord mappingTo(u64 blockIndex) override {
+    BlockRecord mappingTo(const u64 blockIndex) const override {
         return BlockRecord{static_cast<u32>(blockIndex % block()->blockNum()), 0, 1};
     }
 
@@ -23,7 +23,7 @@ public:
         _n = 1;
     }
 
-    const char *me() override {
+    const char *me() const override {
         return "Direct";
     }
 

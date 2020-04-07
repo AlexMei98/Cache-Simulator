@@ -10,7 +10,7 @@
 class FullConnectMapping : public MappingPolicy {
 
 public:
-    BlockRecord mappingTo(u64 blockIndex) override {
+    BlockRecord mappingTo(const u64 blockIndex) const override {
         return BlockRecord {0, 1, block()->blockNum()};
     }
 
@@ -22,7 +22,7 @@ public:
         _n = handler()->block()->blockNum();
     }
 
-    const char *me() override {
+    const char *me() const override {
         return "Full connected";
     }
 

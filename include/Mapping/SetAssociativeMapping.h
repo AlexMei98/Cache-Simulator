@@ -10,11 +10,11 @@
 class SetAssociativeMapping : public MappingPolicy {
 
 public:
-    explicit SetAssociativeMapping(u32 n = 8) {
+    explicit SetAssociativeMapping(const u32 n = 8) {
         _n = n;
     }
 
-    BlockRecord mappingTo(u64 blockIndex) override {
+    BlockRecord mappingTo(const u64 blockIndex) const override {
         return BlockRecord {n() * (static_cast<u32>(blockIndex & getSetIndex)), 1, n()};
     }
 
@@ -24,12 +24,10 @@ public:
 
     void initOthers() override {
         // other initial
-        _setNum = handler()->block()->blockNum() / n();
-        _setCapacity = 64 / handler()->block()->blockSize() / setNum();
         getSetIndex = setNum() - 1;
     }
 
-    const char *me() override {
+    const char *me() const override {
         switch (n()) {
             case  4: return "4-way set associative";
             case  8: return "8-way set associative";
@@ -38,12 +36,10 @@ public:
     }
 
     inline u32 setNum() const {
-        return _setNum;
+        return handler()->block()->blockNum() / n();
     }
 
 private:
-    u32 _setNum{};
-    u32 _setCapacity{};
     u32 getSetIndex{};
 };
 

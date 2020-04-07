@@ -38,7 +38,7 @@ public:
         printf("\t%s Replace\n", me());
     }
 
-    virtual const char* me() = 0;
+    virtual const char* me() const = 0;
 
 private:
     Handler *_handler{};

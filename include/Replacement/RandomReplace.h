@@ -37,7 +37,7 @@ public:
         load(op, victim_index);
     }
 
-    const char *me() override {
+    const char *me() const override {
         return "Random";
     }
 

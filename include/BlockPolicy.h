@@ -14,7 +14,7 @@
 class BlockPolicy {
 
 public:
-    explicit BlockPolicy(u32 size = 8) {
+    explicit BlockPolicy(const u32 size = 8) {
         switch (size) {
             case 64u: _shift = 9; break;
             case 32u: _shift = 8; break;
@@ -29,15 +29,15 @@ public:
         _blockNum = handler->capacity() / blockSize();
     }
 
-    inline bool inBlock(u64 address, u32 index) {
+    inline bool inBlock(const u64 address, const u32 index) const {
         return (address >> shift()) == index;
     }
 
-    inline u64 getIndex(u64 address) const { // physical memory block index
+    inline u64 getIndex(const u64 address) const { // physical memory block index
         return address >> shift();
     }
 
-    inline u32 getOffset(u64 address) const { // physical memory block offset
+    inline u32 getOffset(const u64 address) const { // physical memory block offset
         switch (blockSize() >> 3u) {
             case 64u: return address & 0b111111111u;
             case 32u: return address & 0b011111111u;
