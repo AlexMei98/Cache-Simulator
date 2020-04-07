@@ -35,9 +35,8 @@ public:
         load(op, victim_index);
     }
 
-    void print() override {
-        printf("Replacement Policy\n");
-        printf("\tRandom Replace\n");
+    const char *me() override {
+        return "Random";
     }
 
 private:

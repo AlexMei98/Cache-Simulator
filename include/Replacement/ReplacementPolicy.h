@@ -30,7 +30,12 @@ public:
 
     virtual void replace(Op op, BlockRecord record) = 0;
 
-    virtual void print() = 0;
+    void print() {
+        printf("Replacement Policy\n");
+        printf("\t%s Replace\n", me());
+    }
+
+    virtual const char* me() = 0;
 
 private:
     Handler *_handler{};

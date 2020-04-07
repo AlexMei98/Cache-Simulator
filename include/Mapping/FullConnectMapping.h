@@ -19,7 +19,8 @@ public:
     }
 
     const char *me() override {
-        return "Full connected mapping";
+        printf("Replacement Policy\n");
+        printf("\tLRU Replace\n");
     }
 
 };

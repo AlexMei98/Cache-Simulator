@@ -69,7 +69,7 @@ public:
 
     // tag, valid, dirty getters
 
-    bool valid(u32 index) {
+    bool valid(const u32 index) {
         return meta[index][vBit] & V;
     }
 
@@ -85,7 +85,7 @@ public:
         return handler()->writemiss()->writeBack() && (meta[index][dBit] & D);
     }
 
-    void setDirty(u32 index, bool value) {
+    void setDirty(const u32 index, const bool value) {
         if (!handler()->writemiss()->writeBack()) return;
         if (value) {
             meta[index][dBit] |= D;
@@ -94,7 +94,7 @@ public:
         }
     }
 
-    bool checkTag(u32 index, u64 address) {
+    bool checkTag(const u32 index, const u64 address) {
         u64 addr = address;
         u32 tag = tagWidth(), i = (bitWidthUsed() >> 3u) - 1;
         u32 left = i - (tag >> 3u);
@@ -110,7 +110,7 @@ public:
         return (shift == 8u) || ((static_cast<u8>(meta[index][left] << shift)) == ((addr << shift) & U8A1));
     }
 
-    void setTag(u32 index, u64 address) {
+    void setTag(const u32 index, const u64 address) {
         // set full used byte
         u64 addr = address;
         u32 tag = tagWidth(), i = (bitWidthUsed() >> 3u) - 1;
