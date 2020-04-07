@@ -5,6 +5,8 @@
 #ifndef CACHE_SIM_HANDLER_H
 #define CACHE_SIM_HANDLER_H
 
+#include <cmath>
+
 #include "defines.h"
 #include "Op.h"
 #include "Reader.h"
@@ -19,7 +21,7 @@ class Handler {
 
 public:
     Handler(BlockPolicy *block, MappingPolicy *mapping, ReplacementPolicy *replacement,
-                     WritemissPolicy *writemiss, Reader *reader, Writer *writer, u32 capacity = 128u << 13u);
+                     WritemissPolicy *writemiss, Reader *reader, Writer *writer, u32 capacity = 128u << 10u);
 
     bool processSingleLine(Op &op);
 
@@ -55,6 +57,8 @@ public:
     // getters: const provided
 
     inline u32 capacity() const { return _capacity; }
+
+    inline u32 bitWidth() const { return static_cast<u32>(log2(capacity())); }
 
     inline Reader *reader() const {
         return _reader;

@@ -35,7 +35,37 @@ public:
 
     virtual BlockRecord mappingTo(u64 blockIndex) = 0;
 
-    virtual void init() = 0;
+    virtual void initTagWidth() = 0;
+
+    void initBitWidth() {
+        _bitWidth = 1 + tagWidth(); // valid + tag
+        if (handler()->writemiss()->writeBack()) _bitWidth++; // dirty bit
+    }
+
+    virtual void initOthers() {}
+
+    void init() {
+        initOthers();
+        initTagWidth();
+        initBitWidth();
+        // set V and D
+        V = 0b1u;
+        u32 wasted = bitWidthUsed() - bitWidth();
+        V = static_cast<u8>(V << (7u - wasted));
+        RV = ~V;
+
+        // dirty and valid maybe in different u8
+        vBit = 0;
+        dBit = (handler()->writemiss()->writeBack() && V == 0b1u) ? 1 : 0;
+
+        D = (dBit == 1) ? 0b10000000 : (V >> 1u);
+        RD = ~D;
+        // meta allocate
+        meta = new u8*[block()->blockNum()];
+        for (int i = 0, size = block()->blockNum(); i < size; i++) {
+            meta[i] = new u8[bitWidthUsed() >> 3u]();
+        }
+    }
 
     // tag, valid, dirty getters
 

@@ -19,9 +19,11 @@ SET(SIM_INCLUDES
         include/BlockPolicy.h
         include/Mapping/MappingPolicy.h
         include/Mapping/FullConnectMapping.h
+        include/Mapping/SetAssociativeMapping.h
         include/Replacement/ReplacementPolicy.h
         include/Replacement/RandomReplace.h
-        include/WritemissPolicy.h)
+        include/WritemissPolicy.h
+)
 
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 FILE(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/log)

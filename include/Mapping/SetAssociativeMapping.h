@@ -9,15 +9,22 @@
 
 class SetAssociativeMapping : public MappingPolicy {
 
-    explicit SetAssociativeMapping(u32 n) : _n(n) {}
+public:
+    explicit SetAssociativeMapping(u32 n = 8) : _n(n) {}
 
     BlockRecord mappingTo(u64 blockIndex) override {
-        return BlockRecord {0, 0, 0};
+        return BlockRecord {n() * (static_cast<u32>(blockIndex & getSetIndex)), 1, n()};
     }
 
-    void init() override {
+    void initTagWidth() override {
+        _tagWidth = 64 - handler()->block()->shift() - static_cast<u32>(log2(setNum()));
+    }
+
+    void initOthers() override {
+        // other initial
         _setNum = handler()->block()->blockNum() / n();
-        _setCapacity = handler()->capacity()
+        _setCapacity = 61 / handler()->block()->blockSize() / setNum();
+        getSetIndex = setNum() - 1;
     }
 
     const char *me() override {
@@ -37,9 +44,10 @@ class SetAssociativeMapping : public MappingPolicy {
     }
 
 private:
-    u32 _setNum;
-    u32 _setCapacity;
+    u32 _setNum{};
+    u32 _setCapacity{};
     u32 _n;
+    u32 getSetIndex{};
 };
 
 #endif //CACHE_SIM_SET_ASSOCIATIVE_MAPPING_H
