@@ -21,7 +21,7 @@ class Handler {
 
 public:
     Handler(BlockPolicy *block, MappingPolicy *mapping, ReplacementPolicy *replacement,
-                     WritemissPolicy *writemiss, Reader *reader, Writer *writer, u32 capacity = 128u << 10u);
+                     WritemissPolicy *writemiss, Reader *reader, Writer *writer, u32 capacity = 128u << 13u);
 
     bool processSingleLine(Op &op);
 

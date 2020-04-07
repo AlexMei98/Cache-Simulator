@@ -15,7 +15,8 @@ public:
     }
 
     void initTagWidth() override {
-        _tagWidth = 64 - handler()->bitWidth(); // tag = 64 - 17 (log2(blockNum * blockSize) == 17)
+        _tagWidth = 64 - handler()->bitWidth(); // tag = 64 - offset_b - (20 - offset_b)
+                                                // bitWidth() == (log2(blockNum * blockSize) == 20)
     }
 
     void initOthers() override {

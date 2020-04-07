@@ -16,12 +16,12 @@ class BlockPolicy {
 public:
     explicit BlockPolicy(u32 size = 8) {
         switch (size) {
-            case 64u: _shift = 6; break;
-            case 32u: _shift = 5; break;
-            case  8u: _shift = 3; break;
+            case 64u: _shift = 9; break;
+            case 32u: _shift = 8; break;
+            case  8u: _shift = 6; break;
             default : printf("Invalid block size: %u\n", size); exit(0);
         }
-        _blockSize = size;
+        _blockSize = size << 3u;
     }
 
     void registerHandler(Handler *handler) {
@@ -38,11 +38,11 @@ public:
     }
 
     inline u32 getOffset(u64 address) const { // physical memory block offset
-        switch (blockSize()) {
-            case 64u: return address & 0b111111u;
-            case 32u: return address & 0b011111u;
-            case  8u: return address & 0b000111u;
-            default : printf("Invalid block size: %uB\n", blockSize()); exit(0);
+        switch (blockSize() >> 3u) {
+            case 64u: return address & 0b111111111u;
+            case 32u: return address & 0b011111111u;
+            case  8u: return address & 0b000111111u;
+            default : printf("Invalid block size: %uB\n", blockSize() >> 3u); exit(0);
         }
     }
 
@@ -60,7 +60,7 @@ public:
 
     inline void print() {
         printf("Block Policy\n");
-        printf("\tBlock size: %dB\n", blockSize());
+        printf("\tBlock size: %dB\n", blockSize() >> 3u);
         printf("\tBlock number: %d (2^%d)\n", blockNum(), static_cast<u32>(log2(handler()->capacity())) - shift());
     }
 

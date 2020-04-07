@@ -25,7 +25,7 @@ public:
     void initOthers() override {
         // other initial
         _setNum = handler()->block()->blockNum() / n();
-        _setCapacity = 61 / handler()->block()->blockSize() / setNum();
+        _setCapacity = 64 / handler()->block()->blockSize() / setNum();
         getSetIndex = setNum() - 1;
     }
 
