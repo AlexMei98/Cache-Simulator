@@ -18,8 +18,12 @@ public:
         _tagWidth = 64 - handler()->bitWidth(); // tag = 64 - 17 (log2(blockNum * blockSize) == 17)
     }
 
+    void initOthers() override {
+        _n = 1;
+    }
+
     const char *me() override {
-        return "Direct mapping";
+        return "Direct";
     }
 
 };

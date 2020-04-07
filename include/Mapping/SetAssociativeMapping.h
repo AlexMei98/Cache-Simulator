@@ -10,7 +10,9 @@
 class SetAssociativeMapping : public MappingPolicy {
 
 public:
-    explicit SetAssociativeMapping(u32 n = 8) : _n(n) {}
+    explicit SetAssociativeMapping(u32 n = 8) {
+        _n = n;
+    }
 
     BlockRecord mappingTo(u64 blockIndex) override {
         return BlockRecord {n() * (static_cast<u32>(blockIndex & getSetIndex)), 1, n()};
@@ -39,14 +41,9 @@ public:
         return _setNum;
     }
 
-    inline u32 n() {
-        return _n;
-    }
-
 private:
     u32 _setNum{};
     u32 _setCapacity{};
-    u32 _n;
     u32 getSetIndex{};
 };
 

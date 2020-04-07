@@ -42,7 +42,7 @@ public:
         if (handler()->writemiss()->writeBack()) _bitWidth++; // dirty bit
     }
 
-    virtual void initOthers() {}
+    virtual void initOthers() = 0;
 
     void init() {
         initOthers();
@@ -136,7 +136,7 @@ public:
 
     void print() {
         printf("Mapping Policy\n");
-        printf("\t%s\n", me());
+        printf("\t%s mapping\n", me());
         printf("\tPhysically used bits: %d (%dB)\n", bitWidthUsed(), bitWidthUsed() / 8u);
         printf("\tReal used bits: %d\n", bitWidth());
     }
@@ -165,10 +165,15 @@ public:
         return _block;
     }
 
+    inline u32 n() {
+        return _n;
+    }
+
 protected:
     u8 **meta{};
     u32 _bitWidth{};
     u32 _tagWidth{};
+    u32 _n;
 
     u8 V{};
     u8 D{};

@@ -18,9 +18,12 @@ public:
         _tagWidth = 64 - handler()->block()->shift(); // tag = 64 - offset_b
     }
 
+    void initOthers() override {
+        _n = handler()->block()->blockNum();
+    }
+
     const char *me() override {
-        printf("Replacement Policy\n");
-        printf("\tLRU Replace\n");
+        return "Full connected";
     }
 
 };
