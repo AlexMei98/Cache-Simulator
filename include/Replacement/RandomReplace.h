@@ -23,6 +23,8 @@ public:
         }
     }
 
+    void init() override {}
+
     void load(const Op op, const u32 index) override {
         if (op.w && !handler()->writemiss()->writeAllocate()) return;
         handler()->mapping()->setValid(index, true);

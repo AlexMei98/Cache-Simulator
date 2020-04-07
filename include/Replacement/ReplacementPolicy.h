@@ -14,6 +14,7 @@ public:
     void registerHandler(Handler *handler) {
         _handler = handler;
         _writemiss = handler->writemiss();
+        init();
     }
 
     inline Handler *handler() const {
@@ -23,6 +24,8 @@ public:
     inline WritemissPolicy *writemiss() const {
         return _writemiss;
     }
+
+    virtual void init() = 0;
 
     virtual void update(Op op, u32 index, BlockRecord record) = 0;
 
