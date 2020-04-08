@@ -8,6 +8,7 @@
 #include "Mapping/SetAssociativeMapping.h"
 #include "Replacement/RandomReplace.h"
 #include "Replacement/LRUReplace.h"
+#include "Replacement/BinaryReplace.h"
 #include "WritemissPolicy.h"
 
 void CacheSim(const char *input, const char *output) {
@@ -22,13 +23,12 @@ void CacheSim(const char *input, const char *output) {
 //    auto *mapping = new FullConnectMapping();
 
     // Replacement Policy
-    u32 seed = 0u;
-    bool rand = false; // Random
-    auto *replacement = new RandomReplace(seed, rand);
-//    auto *replacement = new LRUReplace();
+    u32 seed = 0u; bool rand = false; // Random
+//    auto *replacement = new RandomReplace(seed, rand);
+    auto *replacement = new LRUReplace();
+//    auto *replacement = new BinaryReplace();
     // Writemiss Policy
-    bool writeBack = true;
-    bool writeAllocate = true;
+    bool writeBack = true; bool writeAllocate = true;
     auto *writemiss = new WritemissPolicy(writeBack, writeAllocate);
 
     // Utils

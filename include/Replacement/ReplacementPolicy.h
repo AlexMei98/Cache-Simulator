@@ -9,6 +9,8 @@
 #include "Handler.h"
 #include "Mapping/MappingPolicy.h"
 
+#define U3A1 ((u8)(0b111u))
+
 class ReplacementPolicy {
 
 public:

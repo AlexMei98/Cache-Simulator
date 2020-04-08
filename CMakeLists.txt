@@ -23,6 +23,7 @@ SET(SIM_INCLUDES
         include/Replacement/ReplacementPolicy.h
         include/Replacement/RandomReplace.h
         include/Replacement/LRUReplace.h
+        include/Replacement/BinaryReplace.h
         include/WritemissPolicy.h
 )
 
